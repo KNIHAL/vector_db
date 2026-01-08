@@ -1,0 +1,115 @@
+[
+  {
+    "id": "271ae78f-6c4d-46a0-ab38-b1ddf8a64fd3",
+    "text": "Python is great for data science",
+    "vector": {
+      "python": 1,
+      "is": 1,
+      "great": 1,
+      "for": 1,
+      "data": 1,
+      "science": 1
+    },
+    "metadata": {
+      "type": "tech"
+    }
+  },
+  {
+    "id": "4c132e5d-eabc-4ed2-bf42-24d136d1b5d9",
+    "text": "Football is my favorite sport",
+    "vector": {
+      "football": 1,
+      "is": 1,
+      "my": 1,
+      "favorite": 1,
+      "sport": 1
+    },
+    "metadata": {
+      "type": "sports"
+    }
+  },
+  {
+    "id": "1b31bdf9-8b03-4258-b757-e3b256e561d4",
+    "text": "I love GenAI engineering",
+    "vector": {
+      "i": 1.5108256237659907,
+      "love": 1.5108256237659907,
+      "genai": 1.916290731874155,
+      "engineering": 1.5108256237659907
+    },
+    "metadata": {
+      "type": "tech"
+    }
+  },
+  {
+    "id": "dace56f5-c0c0-44ce-84ff-655627806a75",
+    "text": "Python is great for data science and AI",
+    "vector": {
+      "python": 1.6931471805599454,
+      "is": 1.4054651081081644,
+      "great": 1.6931471805599454,
+      "for": 1.6931471805599454,
+      "data": 1.6931471805599454,
+      "science": 1.6931471805599454,
+      "and": 2.09861228866811,
+      "ai": 2.09861228866811
+    },
+    "metadata": {
+      "type": "tech"
+    }
+  },
+  {
+    "id": "f060b2d1-4738-42ae-848e-9fe4c6a73a4a",
+    "text": "MMA is my favorite sport",
+    "vector": {
+      "mma": 2.252762968495368,
+      "is": 1.336472236621213,
+      "my": 1.8472978603872037,
+      "favorite": 1.8472978603872037,
+      "sport": 1.8472978603872037
+    },
+    "metadata": {
+      "type": "sports"
+    }
+  },
+  {
+    "id": "83f98fb1-6177-44ea-b2a6-fd6fe4d0c03c",
+    "text": "my name is nihal",
+    "vector": {
+      "my": 1.6931471805599454,
+      "name": 2.386294361119891,
+      "is": 1.2876820724517808,
+      "nihal": 2.386294361119891
+    },
+    "metadata": {
+      "type": "student"
+    }
+  },
+  {
+    "id": "6feb1d4a-d3ed-4f50-be3e-56f7b03b793f",
+    "text": "I love GenAI engineering",
+    "vector": {
+      "i": 1.9808292530117262,
+      "love": 1.9808292530117262,
+      "genai": 1.9808292530117262,
+      "engineering": 1.9808292530117262
+    },
+    "metadata": {
+      "type": "tech"
+    }
+  },
+  {
+    "id": "fa9ecb91-983c-464d-8e45-7f785f04a6b6",
+    "text": "Testing API for the future",
+    "vector": {
+      "testing": 2.504077396776274,
+      "api": 2.504077396776274,
+      "for": 1.8109302162163288,
+      "the": 2.504077396776274,
+      "future": 2.504077396776274
+    },
+    "metadata": {
+      "type": "test"
+    }
+  }
+]
