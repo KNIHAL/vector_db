@@ -1,50 +1,51 @@
-# 🧠 Vector DB — Local Vector Database with API (Python)
+# 🧠 Vector DB — Local Vector Database with CLI & API (Python)
 
-A **lightweight, local-first Vector Database built from scratch in pure Python**, with a **FastAPI wrapper**, designed for **semantic search, RAG pipelines, and GenAI systems** — without paid APIs or heavy frameworks.
+A **production-style, local-first Vector Database built from scratch in pure Python**, with **CLI and FastAPI wrappers**, designed for **semantic search, document ingestion, and RAG pipelines** — without paid APIs, cloud services, or heavy frameworks.
 
-This project focuses on **fundamentals, explainability, and reusability**, making it ideal for:
-- RAG systems
-- Backend + GenAI portfolios
-- Interviews & system design discussions
+This project focuses on **fundamentals, explainability, and real-world usability**, making it suitable for:
+- RAG backends
+- GenAI / Backend portfolios
+- System design & interview discussions
 
 ---
 
 ## 🚀 Why This Project Exists
 
-Most vector databases hide the internals behind complex abstractions.  
-This project answers a simple but powerful question:
+Most vector databases abstract away the internals behind black-box tooling.  
+This project was built to answer one core question:
 
 > **“How does a vector database actually work under the hood?”**
 
-By building everything from scratch, this project demonstrates:
-- How text is converted into vectors
-- How similarity search works (cosine similarity)
-- How embeddings evolve dynamically
-- How a vector DB is exposed safely via an API
-- How it plugs directly into RAG systems
+By implementing everything from scratch, this project demonstrates:
+- How documents are converted into vectors
+- How similarity search works using cosine similarity
+- How embeddings evolve dynamically with new data
+- How document ingestion (PDF / MD / TXT) works in practice
+- How a vector database plugs directly into RAG systems
 
 ---
 
 ## 🎯 Project Goals
 
-- Build a **true vector database engine**, not a wrapper
+- Build a **real vector database engine**, not a wrapper
 - Keep everything **local, free, and framework-light**
-- Maintain **clear separation of concerns**
-- Make the system **RAG-ready out of the box**
-- Ensure **interview-ready explanations**
+- Maintain **clean separation of concerns**
+- Support **document ingestion (not just toy text input)**
+- Be **RAG-ready out of the box**
+- Stay **interview-explainable**
 
 ---
 
 ## 🧱 High-Level Architecture
 
 ```text
-Client / RAG System / Scraper
+CLI / API / RAG System
 ↓
-FastAPI API
+Ingestion Layer
+(PDF / MD / TXT → Chunks)
 ↓
 Vector DB Engine
-↓
-TF-IDF Embeddings + Similarity
+(TF-IDF + Similarity)
 ↓
 vectors.json
 ```
@@ -60,13 +61,16 @@ vector_db/
 ├── core/
 │ ├── storage.py # Disk persistence (JSON)
 │ ├── tfidf.py # TF-IDF embedding engine
-│ └── vectordb.py # Vector DB core logic
+│ ├── vectordb.py # Vector DB core logic
+│ ├── loaders.py # PDF / MD / TXT loaders
+│ └── chunker.py # Text chunking logic
 │
 ├── data/
-│ └── vectors.json # Stored vectors
+│ ├── vectors.json # Stored vectors
+│ └── uploads/ # Optional persisted source files
 │
-├── cli.py # CLI wrapper (manual testing)
-├── api.py # FastAPI wrapper (production use)
+├── cli.py # CLI interface
+├── api.py # FastAPI wrapper
 └── README.md
 ```
 
@@ -80,22 +84,21 @@ vector_db/
 - Converts text → TF-IDF vectors
 - Performs cosine similarity search
 - Supports delete operations
-- Automatically adapts to new data
+- Automatically adapts when new data is added
 
-**Responsibility:**  
-Semantic retrieval (Retriever in RAG).
+**Role:** Retriever (RAG terminology)
 
 ---
 
 ### 2️⃣ Embedding Layer (`tfidf.py`)
 - Pure-Python TF-IDF implementation
 - Corpus-aware embeddings
-- Dynamically re-fits on new inserts
+- Re-fits dynamically on ingestion
 
 **Why TF-IDF?**
 - Fully local
 - Explainable
-- Interview-friendly
+- Lightweight
 - Strong baseline before neural embeddings
 
 ---
@@ -103,18 +106,25 @@ Semantic retrieval (Retriever in RAG).
 ### 3️⃣ Storage Layer (`storage.py`)
 - JSON-based persistence
 - Human-readable & debuggable
-- No database magic
+- No hidden magic
 
 ---
 
-### 4️⃣ API Layer (`api.py`)
-- FastAPI wrapper
-- Input validation
-- Proper HTTP status codes
-- Swagger UI support
+### 4️⃣ Ingestion Layer (`loaders.py`, `chunker.py`)
+- Supports **PDF, Markdown, and Text files**
+- Extracts text
+- Splits into overlapping chunks
+- Each chunk stored as an independent vector
 
-**Responsibility:**  
-Expose Vector DB safely to other systems.
+This is what makes the project **non-toy** and production-relevant.
+
+---
+
+### 5️⃣ API Layer (`api.py`)
+- FastAPI-based wrapper
+- Input validation & proper status codes
+- File ingestion endpoint
+- Swagger UI for testing
 
 ---
 
@@ -127,25 +137,32 @@ Expose Vector DB safely to other systems.
 - Metadata support
 - Persistent storage
 
+### CLI
+- Insert text
+- Search vectors
+- Delete by ID
+- Ingest PDF / MD / TXT files
+- Optional file persistence (`data/uploads/`)
+
 ### API
-- `POST /insert` → add new text
+- `POST /insert` → insert raw text
 - `POST /search` → semantic search
-- `DELETE /delete` → remove record
+- `POST /ingest-file` → document ingestion
+- `DELETE /delete` → remove vector
 - `GET /health` → health check
-- Input validation & error handling
 
 ---
 
 ## ❌ Intentionally Not Included
 
-To keep the system clean and reusable:
+To keep the system focused and explainable:
 
 - No SQL
 - No joins or schemas
-- No neural embeddings (yet)
 - No cloud services
 - No paid APIs
-- No RAG generation logic
+- No neural embeddings (yet)
+- No LLM generation logic
 
 > **This project is the Retriever, not the Generator.**
 
@@ -156,62 +173,83 @@ To keep the system clean and reusable:
 ```bash
 python3 -m venv env
 source env/bin/activate
-pip install fastapi uvicorn
+pip requirements.txt
 uvicorn api:app --reload
 ```
-Open Swagger UI:
+Swagger UI:
 
 ```text
 http://127.0.0.1:8000/docs
 ```
 
+### 🧪 Testing
+
+**CLI**
+
+```text
+python cli.py
+```
+
+- Ingest PDF / MD / TXT using local paths
+- Search content semantically
+- Verify chunk metadata
+
+**API**
+
+- Test /ingest-file via Swagger
+- Search ingested documents
+- Restart server → data persists
+
+
 ## 🔌 How This Is Used in RAG
 
-This Vector DB fits directly into a RAG pipeline:
+This Vector DB plugs directly into a RAG pipeline:
 
 1️⃣ Ingestion
 
-- Chunk documents (PDF, web, text)
-- Call POST /insert for each chunk
+- Chunk documents
+- Store via CLI or /ingest-file
 
 2️⃣ Retrieval
-- User query → POST /search
-- Get top-K relevant chunks
 
-## 3️⃣ Generation (External)
+- User query → /search
+- Top-K relevant chunks returned
 
-- Pass retrieved chunks to any LLM
-- Generate final answer
-- RAG Flow:
-  - User Query → Vector DB (/search) → Context → LLM → Answer
-- 👉 No changes needed in this DB to support RAG.
+3️⃣ Generation (External)
 
-## 🧪 Testing
+- Retrieved chunks passed to an LLM
+- Answer generated outside this system
 
-- CLI testing via cli.py
-- API testing via Swagger UI
-- Dynamic insert/search/delete
-- Corpus-aware TF-IDF validation
+**Flow:**
+
+```text
+User Query → Vector DB → Context → LLM → Answer
+
+```
+👉 No changes required in this DB to support RAG.
 
 ## 🧠 Key Learnings
 
-- Vector DBs are about math + similarity, not tables
-- Embeddings can be built incrementally
-- API and engine must stay separate
-- TF-IDF is a powerful, explainable baseline
-- A clean Retriever is enough for RAG
+- Vector databases are about math + similarity, not tables
+- Document ingestion is essential for real RAG systems
+- Chunking is as important as embeddings
+- Clean separation of engine, CLI, and API matters
+- TF-IDF is a strong, explainable foundation
+
 
 ## 📌 Project Status
 
 ✅ Vector DB Engine — Complete
-✅ CLI Wrapper — Complete
-✅ API Wrapper — Complete
+✅ Document Ingestion — Complete
+✅ CLI — Stable
+✅ API — Stable
 ✅ RAG-Ready — Yes
 
-## 🔜 Future (Optional):
+## Status: FROZEN (v1.0)
 
+- 🔜 Future (Optional, Not Required)
 - Neural embeddings
-- Scraper integration
+- Scraper-based ingestion
 - Full RAG demo
 
 ## 📄 License

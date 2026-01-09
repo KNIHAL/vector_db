@@ -1,3 +1,22 @@
-env
+# Virtual environment
+env/
+.venv/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Environment variables
 .env
-venv
+
+# Local database / data filesU
+data/*.json
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
