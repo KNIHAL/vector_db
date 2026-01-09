@@ -237,14 +237,6 @@ User Query → Vector DB → Context → LLM → Answer
 - TF-IDF is a strong, explainable foundation
 
 
-## 📌 Project Status
-
-✅ Vector DB Engine — Complete
-✅ Document Ingestion — Complete
-✅ CLI — Stable
-✅ API — Stable
-✅ RAG-Ready — Yes
-
 ## Status: FROZEN (v1.0)
 
 - 🔜 Future (Optional, Not Required)
