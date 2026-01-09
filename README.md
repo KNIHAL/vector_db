@@ -238,8 +238,7 @@ User Query → Vector DB → Context → LLM → Answer
 
 
 ## Status: FROZEN (v1.0)
-
-- 🔜 Future (Optional, Not Required)
+ 🔜 Future (Optional, Not Required)
 - Neural embeddings
 - Scraper-based ingestion
 - Full RAG demo
